@@ -229,36 +229,46 @@
             });
             table += "</tr>";
 
+            const tietTime = [
+                ["07:00", "07:50"],
+                ["08:00", "08:50"],
+                ["09:00", "09:50"],
+                ["10:00", "10:50"],
+                ["11:00", "11:50"],
+                ["12:30", "13:20"],
+                ["13:30", "14:20"],
+                ["14:30", "15:20"],
+                ["15:30", "16:20"],
+                ["16:30", "17:20"],
+                ["17:30", "18:20"],
+                ["18:30", "19:20"],
+                ["19:30", "20:20"],
+                ["20:30", "21:20"],
+            ];
+
             for (let i = 0; i < tietCount; i++) {
-                const tietData = colMap.map(j => data[i][j]).join('').trim();
-                if (tietData === "") continue;
-
-                const tietTime = [
-                    ["07:00", "07:50"],
-                    ["08:00", "08:50"],
-                    ["09:00", "09:50"],
-                    ["10:00", "10:50"],
-                    ["11:00", "11:50"],
-                    ["12:30", "13:20"],
-                    ["13:30", "14:20"],
-                    ["14:30", "15:20"],
-                    ["15:30", "16:20"],
-                    ["16:30", "17:20"],
-                    ["17:30", "18:20"],
-                    ["18:30", "19:20"],
-                    ["19:30", "20:20"],
-                    ["20:30", "21:20"],
-                ];
-
                 const [start, end] = tietTime[i];
 
+                // Kiểm tra xem tất cả các ô trong tiết này có trống không
+                const isEmptyRow = colMap.every(j => data[i][j].trim() === "");
 
-                table += `<tr><td class='tiet-col'>Tiết ${i + 1}<br>${start} - ${end}</td>`;
+                // Nếu là tiết 11 đến 14 và trống toàn bộ thì bỏ qua
+                if ((i + 1 >= 11 && i + 1 <= 14) && isEmptyRow) {
+                    continue;
+                }
+
+                // Luôn giữ tiết 5
+                // Các tiết còn lại thì giữ nếu có dữ liệu
+
+                let tietRow = `<tr><td class='tiet-col'>Tiết ${i + 1}<br>${start} - ${end}</td>`;
                 colMap.forEach(j => {
-                    table += `<td>${data[i][j]}</td>`;
+                    tietRow += `<td>${data[i][j] || ""}</td>`;
                 });
-                table += "</tr>";
+                tietRow += "</tr>";
+                table += tietRow;
             }
+
+
 
             table += "</table>";
             tableContainer.innerHTML = table;
