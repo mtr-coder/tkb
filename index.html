@@ -197,7 +197,7 @@
                         if (match[1]) {
                             thu = parseInt(match[1]);
                         } else {
-                            thu = 8; // CN
+                            thu = 8;
                         }
                         const tietBD = parseInt(match[2]);
                         const tietKT = parseInt(match[3]);
@@ -270,11 +270,18 @@
 
         function xuatPNG() {
             const container = document.getElementById("tableContainer");
-            html2canvas(container).then(canvas => {
+            const table = container.querySelector("table");
+            const oldBoxShadow = table.style.boxShadow;
+            table.style.boxShadow = "none";
+            html2canvas(container, {
+                scale: 2,
+                useCORS: true
+            }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'thoikhoabieu.png';
                 link.href = canvas.toDataURL();
                 link.click();
+                table.style.boxShadow = oldBoxShadow;
             });
         }
 
