@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,12 +11,10 @@
             background: #f2f6fb;
             color: #2c3e50;
         }
-
         h1 {
             text-align: center;
             color: #2c3e50;
         }
-
         .form-container {
             margin: 0 auto;
             max-width: 800px;
@@ -26,14 +23,12 @@
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-
         label {
             font-weight: bold;
             display: block;
             margin-bottom: 8px;
             font-size: 16px;
         }
-
         textarea {
             width: 100%;
             padding: 12px;
@@ -46,7 +41,6 @@
             font-family: monospace;
             box-sizing: border-box;
         }
-
         button {
             padding: 10px 15px;
             font-size: 15px;
@@ -57,20 +51,16 @@
             cursor: pointer;
             margin-right: 10px;
         }
-
         button:hover {
             background-color: #2980b9;
         }
-
         #output {
             margin-top: 30px;
             overflow-x: auto;
         }
-
         .scroll-container {
             min-width: 1000px;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -80,7 +70,6 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             min-width: 800px;
         }
-
         th,
         td {
             border: 1px solid #d0d7de;
@@ -90,19 +79,16 @@
             font-size: 15px;
             word-wrap: break-word;
         }
-
         th {
             background-color: #007bff;
             color: white;
         }
-
         .tiet-col {
             background-color: #e3f2fd;
             font-weight: bold;
             width: 90px;
             font-size: 15px;
         }
-
         .monhoc {
             background-color: #dfefff;
             color: #2c3e50;
@@ -141,9 +127,7 @@
             display: none;
         }
     </style>
-
 </head>
-
 <body>
     <h1>Thời khóa biểu 🗓️</h1>
     <div class="form-container">
@@ -153,15 +137,12 @@
         <button id="btnPNG" class="hidden" onclick="xuatPNG()">Xuất PNG</button>
         <button id="btnExcel" class="hidden" onclick="xuatExcel()">Xuất Excel</button>
     </div>
-
     <div id="output">
         <div id="tableContainer" class="scroll-container"></div>
     </div>
-
     <footer>
         © 2025 | LH: <a href="mailto:tranminhtruong2006@gmail.com">tranminhtruong2006@gmail.com</a>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
@@ -185,10 +166,8 @@
                     if (match) return 'Thứ ' + x;
                     return x.trim();
                 }).join(';');
-
                 const thongTinLich = rawLich.split(';').map(x => x.trim()).filter(Boolean);
                 if (!thongTinLich) return;
-
                 thongTinLich.forEach(lich => {
                     const match = lich.match(/(?:Thứ\s*(\d)|CN|Cn|cn|Chủ Nhật):\s*(\d+)-(\d+),(.+)/);
                     if (match) {
@@ -201,9 +180,7 @@
                         const tietBD = parseInt(match[2]);
                         const tietKT = parseInt(match[3]);
                         const phong = match[4].trim();
-
                         let col = thu - 2;
-
                         for (let tiet = tietBD; tiet <= tietKT; tiet++) {
                             if (col >= 0 && col <= 7 && tiet >= 1 && tiet <= tietCount) {
                                 data[tiet - 1][col] += `<div class='monhoc'>${tenMon}<br>${phong}</div>`;
@@ -212,22 +189,18 @@
                     }
                 });
             });
-
             const validDays = ["Tiết", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
             const colMap = [0, 1, 2, 3, 4, 5];
-
-            const hasSunday = data.some(row => row[7].trim() !== "");
+            const hasSunday = data.some(row => row[6].trim() !== "");
             if (hasSunday) {
                 validDays.push("Chủ Nhật");
-                colMap.push(7);
+                colMap.push(6);
             }
-
             let table = "<table><tr>";
             validDays.forEach(day => {
                 table += `<th>${day}</th>`;
             });
             table += "</tr>";
-
             const tietTime = [
                 ["07:00", "07:50"],
                 ["08:00", "08:50"],
@@ -244,7 +217,6 @@
                 ["19:30", "20:20"],
                 ["20:30", "21:20"],
             ];
-
             for (let i = 0; i < tietCount; i++) {
                 const [start, end] = tietTime[i];
                 const isEmptyRow = colMap.every(j => data[i][j].trim() === "");
@@ -258,14 +230,12 @@
                 tietRow += "</tr>";
                 table += tietRow;
             }
-
             table += "</table>";
             tableContainer.innerHTML = table;
 
             document.getElementById("btnPNG").classList.remove("hidden");
             document.getElementById("btnExcel").classList.remove("hidden");
         }
-
         function xuatPNG() {
             const container = document.getElementById("tableContainer");
             const table = container.querySelector("table");
@@ -282,7 +252,6 @@
                 table.style.boxShadow = oldBoxShadow;
             });
         }
-
         function xuatExcel() {
             const table = document.querySelector("#tableContainer table");
             if (!table) return alert("Hãy tạo thời khóa biểu trước!");
@@ -293,5 +262,4 @@
         }
     </script>
 </body>
-
 </html>
